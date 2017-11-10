@@ -1,0 +1,113 @@
+buildscript {
+    ext {
+        springBootVersion = project.springBootVersion
+        propdepsPluginVersion = project.propdepsPluginVersion
+    }
+    repositories {
+        mavenCentral()
+        maven { url 'http://repo.spring.io/plugins-release' }
+    }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}"
+        classpath "io.spring.gradle:propdeps-plugin:${propdepsPluginVersion}"
+    }
+}
+
+group 'alanbear.sample'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'idea'
+apply plugin: 'propdeps'
+apply plugin: 'propdeps-idea'
+apply plugin: 'propdeps-maven'
+apply plugin: 'propdeps-eclipse'
+
+//一定要在apply之後，不然會找不到property
+targetCompatibility = project.javaVersion
+sourceCompatibility = project.javaVersion
+
+ext {
+    jsonVersion = project.jsonVersion
+    jacksonDatatypeJSR310Version = project.jacksonDatatypeJSR310Version
+    hibernateVersion = project.hibernateVersion
+}
+
+repositories {
+    mavenCentral()
+    jcenter()
+    maven {
+        name 'public-jboss'
+        url 'http://repository.jboss.org/nexus/content/groups/public-jboss'
+    }
+    maven {
+        name 'public'
+        url 'http://repository.jboss.org/nexus/content/groups/public'
+    }
+
+//    連接內部網路專用
+//    maven {
+//        url 'http://{IP/Domain}/PATH'
+//        credentials {
+//            username project.privateRepositoryUsername
+//            password project.privateRepositoryPassword
+//        }
+//    }
+
+    //local
+    flatDir {
+        dirs '../libs'
+    }
+}
+
+configurations.all {
+    // 解決snapshot版本問題, intellij不支援自動更新版本，需要手動移除舊的dependency
+    // check for updates every build
+    resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+}
+
+dependencies {
+
+    //local jar
+//    compile fileTree(dir: '../libs', include: '*.jar')
+
+    //spring
+    compile("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    //json
+    compile("org.json:json:${jsonVersion}")
+    compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDatatypeJSR310Version}")
+
+
+    //hibernate
+    compile("org.hibernate:hibernate-core:${hibernateVersion}")
+    compile("org.hibernate:hibernate-entitymanager:${hibernateVersion}")
+
+    //apache
+    compile("org.apache.commons:commons-lang3:3.6")
+    compile("commons-beanutils:commons-beanutils:1.9.3")
+
+    // commons-dbcp2
+    compile("org.apache.commons:commons-dbcp2:2.1.1")
+
+    provided("org.projectlombok:lombok:1.16.18")
+
+//    runtime("com.microsoft.sqlserver:mssql-jdbc:6.2.0.jre8")
+//    runtime("net.sourceforge.jtds:jtds:1.3.1")
+//    runtime("mysql:mysql-connector-java")
+    runtime("com.h2database:h2")
+
+    optional("org.springframework.boot:spring-boot-devtools")
+    optional("org.springframework.boot:spring-boot-configuration-processor")
+
+    testCompile("org.springframework.boot:spring-boot-starter-test")
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}
+
+//處理@ConfigurationProperties設定
+compileJava.dependsOn(processResources)
+
+task wrapper(type: Wrapper) {
+    gradleVersion = project.gradleVersion
+}
