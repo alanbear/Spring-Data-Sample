@@ -1,0 +1,44 @@
+spring:
+    #https://github.com/spring-projects/spring-boot/issues/4659
+    jmx:
+        enabled: false
+
+    jpa:
+        show-sql: true
+        hibernate:
+            naming:
+                #大小寫問題
+                implicit-strategy: org.hibernate.boot.model.naming.ImplicitNamingStrategyLegacyJpaImpl
+                physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+        properties:
+            hibernate:
+                dialect: org.hibernate.dialect.H2Dialect
+                hbm2ddl:
+                    auto: update
+
+    #Database Configuration
+    datasource:
+        dbcp2:
+            driverClassName:               org.h2.Driver
+            url:                           jdbc:h2:./DB/sample_h2_db;DB_CLOSE_ON_EXIT=FALSE;MODE=MySQL
+            username:                      sa
+            password:
+            validationQuery:               "select 1"
+            testOnBorrow:                  true
+            testWhileIdle:                 true
+            timeBetweenEvictionRunsMillis: 60000
+            minEvictableIdleTimeMillis:    300000
+            initialSize:                   10
+            maxTotal:                      200
+            maxIdle:                       20
+            minIdle:                       5
+            removeAbandonedOnMaintenance:  true
+            removeAbandonedOnBorrow:       true
+            removeAbandonedTimeout:        3000
+
+    h2:
+        console:
+            enabled:              true
+            path:                 /h2-console
+            settings:
+                web-allow-others: true

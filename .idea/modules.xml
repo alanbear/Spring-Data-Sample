@@ -3,8 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/Spring-Data.iml" filepath="$PROJECT_DIR$/.idea/modules/Spring-Data.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Spring-Data_main.iml" filepath="$PROJECT_DIR$/.idea/modules/Spring-Data_main.iml" group="Spring-Data" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Spring-Data_test.iml" filepath="$PROJECT_DIR$/.idea/modules/Spring-Data_test.iml" group="Spring-Data" />
     </modules>
   </component>
 </project>
