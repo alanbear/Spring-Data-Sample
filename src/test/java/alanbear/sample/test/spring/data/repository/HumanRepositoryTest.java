@@ -80,14 +80,22 @@ public class HumanRepositoryTest extends AbstractDataTest{
     }
 
     @Test
-    public void findByHeightBetween(){
+    public void findByHeightBetweenTest(){
         List<Human> humans = humanRepository.findByHeightBetween(160,210);
         Assert.assertTrue(humans.size() == 2);
     }
 
     @Test
-    public void findByLastNameLike(){
+    public void findByLastNameLikeTest(){
         List<Human> humans = humanRepository.findByLastNameLike("%nana");
+        Assert.assertTrue(humans.size() == 1);
+    }
+
+    @Test
+    public void cacheTest(){
+        List<Human> humans = humanRepository.findByLastNameLike("%nana");
+        Assert.assertTrue(humans.size() == 1);
+        humans = humanRepository.findByLastNameLike("%nana");
         Assert.assertTrue(humans.size() == 1);
     }
 }

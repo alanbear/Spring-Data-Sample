@@ -1,6 +1,8 @@
 package alanbear.sample.spring.data.repository;
 
 import alanbear.sample.spring.data.model.Human;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Collection;
 import java.util.List;
 
+@CacheConfig(cacheNames = "humans")
 @Repository
 public interface HumanRepository extends BaseRepository<Human, String> {
 
@@ -48,6 +51,6 @@ public interface HumanRepository extends BaseRepository<Human, String> {
     List<Human> findByHeightBetween(float down, float up);
 
     //by like
+    @Cacheable
     List<Human> findByLastNameLike(String nameLike);
-
 }
