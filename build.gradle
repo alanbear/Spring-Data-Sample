@@ -76,7 +76,7 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
 
     //json
-    compile("org.json:json:${jsonVersion}")
+//    compile("org.json:json:${jsonVersion}")
     compile("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${jacksonDatatypeJSR310Version}")
 
 
